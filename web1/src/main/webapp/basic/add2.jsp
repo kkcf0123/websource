@@ -14,27 +14,27 @@
     />
 </head>
 <body>
-    <div class="container mt-5">
-      <form action="/result2.jsp" method="post">
-        <div class="row mb-3 g-3">
-        <div class="col">
-            <input type="text" class="form-control" id="num1" placeholder="no1" name="num1" />
-        </div>
-        <div class="col">
+    <div class="container mt-5">      
+      <form action="result2.jsp" method="post">
+        <div class="row mb-3 g-3"> 
+          <div class="col">
+            <input type="text" class="form-control" id="num1" placeholder="숫자1" name="num1"/>
+          </div>       
+          <div class="col">
             <select name="op" id="op" class="form-select">
-                <option selected>사칙연산 선택</option>
-                <option value="+">+</option>
-                <option value="-">-</option>
-                <option value="*">*</option>
-                <option value="/">/</option>
+              <option selected>사칙연산 선택</option>
+              <option value="+">+</option>
+              <option value="-">-</option>
+              <option value="*">*</option>
+              <option value="/">/</option>
             </select>
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" id="num2" placeholder="no2" name="num2" />
-        </div>
-        </div>
+          </div>       
+          <div class="col">
+            <input type="text" class="form-control" id="num2" placeholder="숫자2" name="num2"/>
+          </div>          
+        </div>       
         <div>
-          <button type="submit" class="btn btn-success">result</button>
+          <button type="submit" class="btn btn-success">사칙연산</button>
         </div>
       </form>
     </div>

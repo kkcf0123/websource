@@ -14,14 +14,14 @@
     />
 </head>
 <body>
-    <div class="container">
-      <form action="/add" method="post">
-        <div class="mb-3">
-          <input type="text" class="form-control" id="num1" placeholder="no1" name="num1" size="5"/>
-          <input type="text" class="form-control" id="num2" placeholder="no2" name="num2" size="5"/>
-        </div>
+    <div class="container">      
+      <form action="result1.jsp" method="post">
+        <div class="mb-3">        
+          <input type="text" class="form-control" id="num1" placeholder="숫자1" name="num1" size="5"/>
+          <input type="text" class="form-control" id="num2" placeholder="숫자2" name="num2" size="5"/>
+        </div>       
         <div>
-          <button type="submit" class="btn btn-success">+</button>
+          <button type="submit" class="btn btn-success">더하기</button>
         </div>
       </form>
     </div>

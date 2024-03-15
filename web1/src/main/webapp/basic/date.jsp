@@ -1,6 +1,5 @@
-<%@ page import="java.util.Date"%>
-<%@ page import="java.time.LocalTime"%>
-
+<%@ page import="java.time.LocalTime" %>
+<%@ page import="java.util.Date" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> --%>
 <!DOCTYPE html>
@@ -11,16 +10,14 @@
     <title>Document</title>
 </head>
 <body>
-<h1>current time</h1>
-
+    <h1>현재 시간</h1>
+    <%-- 1. 자바스크립트  2. 자바 --%>
     <%
         Date date = new Date();
-        out.print(date);
+        out.print(date+"<br>");
 
         LocalTime currTime = LocalTime.now();
         out.print(currTime);
     %>
-    
-    
 </body>
 </html>

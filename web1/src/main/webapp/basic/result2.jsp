@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> --%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,26 +9,29 @@
 </head>
 <body>
     <%
-        Int num1 = Integer.parseInt(request.getParameter("num1"));
-        Int num2 = Integer.parseInt(request.getParameter("num2"));
+        // 사용자 입력값 가져오기
+        int num1 = Integer.parseInt(request.getParameter("num1"));
+        int num2 = Integer.parseInt(request.getParameter("num2"));
         String op = request.getParameter("op");
-      
-        // PrintWriter out = res.getWriter();
+
         int result = 0;
-
-        // request.setCharacterEncoding("utf-8");
-
-        if (op.equals("+")) {
-            result = num1 + num2;
-        } else if (op.equals("-")) {
-            result = num1 - num2;
-        } else if (op.equals("*")) {
-            result = num1 * num2;
-        } else if (op.equals("/")) {
-            result = num1 / num2;
-        }
-        // out.print(num1 + op + num2 + "=" + result);
+        switch (op) {
+            case "+":
+                result = num1 + num2;
+                break;
+            case "-":
+                result = num1 - num2;
+                break;
+            case "*":
+                result = num1 * num2;
+                break;
+            case "/":
+                result = num1 / num2;
+                break;
+            default:
+                break;
+        }       
     %>
-    <h4><%=num1%><%=op%><%=num2%>=<%=reuslt%></h4>
+    <h4><%=num1%> <%=op%> <%=num2%> = <%=result%></h4>
 </body>
 </html>
