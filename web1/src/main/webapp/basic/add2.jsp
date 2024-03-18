@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> --%>
+<%@ page import="member.MemberDTO" %>
+<%
+  //session scope에 담겨있는 elements get
+  MemberDTO loginDto = (MemberDTO)session.getAttribute("loginDto");
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +20,11 @@
     />
 </head>
 <body>
-    <div class="container mt-5">      
+    <div class="container mt-5">     
+      <div>
+        name : <%=loginDto.getName()%>
+        <button type="button" id="logout">logout</button>
+      </div>  
       <form action="result2.jsp" method="post">
         <div class="row mb-3 g-3"> 
           <div class="col">
@@ -38,5 +48,6 @@
         </div>
       </form>
     </div>
+    <script src = "/js/logout.js"></script>
 </body>
 </html>
