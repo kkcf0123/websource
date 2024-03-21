@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib  uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
   <head>
@@ -220,21 +220,21 @@
             <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
               <ul class="nav flex-column">
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href='<c:url value="/view/list.jsp"/>'>
+                  <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href='<c:url value="/view/list.jsp" />'>
                     <svg class="bi"><use xlink:href="#house-fill" /></svg>
                     Todo List
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href='<c:url value="/jstl/jstl.jsp"/>'>
+                  <a class="nav-link d-flex align-items-center gap-2" href='<c:url value="/view/create.jsp"/>'>
                     <svg class="bi"><use xlink:href="#file-earmark" /></svg>
                     Todo create
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
+                  <a class="nav-link d-flex align-items-center gap-2" href='<c:url value="/jstl/jstl.jsp" />'>
                     <svg class="bi"><use xlink:href="#cart" /></svg>
-                    Products
+                    jstl
                   </a>
                 </li>
                 <li class="nav-item">
