@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,8 +16,6 @@ public class BookCreateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // create.jsp 에서 넘긴 값 가져오기
-        // 한글처리
         req.setCharacterEncoding("utf-8");
         // Integer.parseInt("") => NumberFormatException 발생
         int code = Integer.parseInt(req.getParameter("code"));

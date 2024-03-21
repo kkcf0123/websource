@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dto.TodoDto;
+import dto.ToDoDto;
 
-public class TodoDao {
+public class ToDoDao {
 
     private Connection con;
     private PreparedStatement pstmt;
@@ -43,9 +43,9 @@ public class TodoDao {
 
     // 3. sql 작업 = CRUD 메소드 구현
     // 전체조회 - Read
-    public List<TodoDto> getList() {
+    public List<ToDoDto> getList() {
 
-        List<TodoDto> list = new ArrayList<>();
+        List<ToDoDto> list = new ArrayList<>();
 
         con = getConnection();
         String sql = "select no, title, created_at, completed from todotbl order by no desc";
@@ -53,7 +53,7 @@ public class TodoDao {
             pstmt = con.prepareStatement(sql);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                TodoDto dto = new TodoDto();
+                ToDoDto dto = new ToDoDto();
                 dto.setNo(rs.getInt("no"));
                 dto.setTitle(rs.getString("title"));
                 dto.setCreatedAt(rs.getDate("created_at"));
@@ -69,8 +69,8 @@ public class TodoDao {
         return list;
     }
 
-    public TodoDto getRow(String no) {
-        TodoDto dto = null;
+    public ToDoDto getRow(String no) {
+        ToDoDto dto = null;
         con = getConnection();
         String sql = "select * from todotbl where no=?";
         try {
@@ -79,7 +79,7 @@ public class TodoDao {
             pstmt.setInt(1, Integer.parseInt(no));
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                dto = new TodoDto();
+                dto = new ToDoDto();
                 dto.setNo(rs.getInt("no"));
                 dto.setTitle(rs.getString("title"));
                 dto.setCreatedAt(rs.getDate("created_at"));
@@ -95,7 +95,7 @@ public class TodoDao {
     }
 
     // 추가 - Create(insert)
-    public int insert(TodoDto inserDto) {
+    public int insert(ToDoDto inserDto) {
         int result = 0;
 
         con = getConnection();
@@ -115,7 +115,7 @@ public class TodoDao {
     }
 
     // 수정 - Update
-    public int update(TodoDto inserDto) {
+    public int update(ToDoDto inserDto) {
         int result = 0;
 
         con = getConnection();

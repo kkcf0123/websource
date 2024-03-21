@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class TodoDto {
+public class ToDoDto {
     // table 구조와 동일하게 작성
     private int no;
     private String title;
