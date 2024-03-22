@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> --%>
 <%@ include file="../include/header.jsp" %>
-<%@ page import="dto.ToDoDto"%>
+<%@ page import="dto.TodoDto"%>
 <%
    // TodoDto todo = (TodoDto)request.getAttribute("todo");
 %>
@@ -28,7 +28,7 @@
         <textarea class="form-control" id="description" rows="3" name="description" readonly>${todo.description}</textarea>
     </div>
     <div>
-        <a class="btn btn-primary" href='<c:url value="modify.do?no=${todo.no}"/>'>수정</a>
+        <a class="btn btn-primary" href='<c:url value="/modify.do?no=${todo.no}" />'>수정</a>
         <a class="btn btn-success" href='<c:url value="/list.do" />'>목록</a>
     </div>
 </form>

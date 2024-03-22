@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import action.Action;
 import action.ActionForward;
 import action.TodoListAction;
+import action.TodoReadAction;
 import dao.TodoDao;
 import dto.TodoDto;
 import service.TodoService;
@@ -34,59 +35,37 @@ public class TodoServlet extends HttpServlet {
         // System.out.println("contextPath " + contextPath);
         System.out.println("cmd " + cmd);
 
-        TodoDao dao = new TodoDao();
-        TodoService service = new TodoServiceImpl();
+        // TodoDao dao = new TodoDao();
+        // TodoService service = new TodoServiceImpl();
+
+        // 목록 클릭: localhost:8080/list.do request
+        // todoservlet으로 요청 전달
+        // 1) 요청에 대한 한글처리
+        // 2) 어디서 온 요청인지 분리작업
+        // 3) 분리된 요청에 따라 Action 생성
+        // 4) 생성된 Action에게 일 시키기(action.execute(req))
+        // Action : client가 보낸 정보 가져오기
+        // 서비스 호출
+        // 서비스 결과에 따라 이동방식과 이동경로 객체 생성
+        // 이동방식 - true(session.setAttribute() or 다시 servlet으로 요청이 가거나 or 가져갈 값이 없거나)
+        // session -> redirect
+        // false(req.setAttribute())
+        // request -> forward
 
         Action action = null;
 
         if (cmd.equals("/list.do")) {
             action = new TodoListAction("/view/list.jsp");
         } else if (cmd.equals("/read.do")) {
-            // TodoReadServlet 에서 했던 작업
-            String no = req.getParameter("no");
-            TodoDto todo = service.getRow(no);
-            req.setAttribute("todo", todo);
-            // todo 를 read.jsp에 보여주기
-            // RequestDispatcher rd = req.getRequestDispatcher("/view/read.jsp");
-            // rd.forward(req, resp);
+            action = new TodoReadAction("/view/read.jsp");
         } else if (cmd.equals("/modify.do")) {
-            // 제목 클릭 시 no 가져오기
-            String no = req.getParameter("no");
-            TodoDto todo = service.getRow(no);
-            req.setAttribute("todo", todo);
-            // todo 를 modify.jsp에 보여주기
-            // RequestDispatcher rd = req.getRequestDispatcher("/view/modify.jsp");
-            // rd.forward(req, resp);
+            action = new TodoReadAction("/view/modify.jsp");
         } else if (cmd.equals("/update.do")) {
-            String completed = req.getParameter("completed");
-            String description = req.getParameter("description");
-            String no = req.getParameter("no");
-
-            TodoDto dto = new TodoDto();
-            dto.setCompleted(Boolean.parseBoolean(completed));
-            dto.setDescription(description);
-            dto.setNo(Integer.parseInt(no));
-
-            boolean result = service.update(dto);
-
-            // resp.sendRedirect("/list.do");
-
+            action = new TodoReadAction("/view/list.do");
         } else if (cmd.equals("/delete.do")) {
-            String no = req.getParameter("no");
-            boolean result = service.delete(no);
-            // resp.sendRedirect("/list.do");
+            action = new TodoReadAction("/view/list.do");
         } else if (cmd.equals("/create.do")) {
-            String title = req.getParameter("title");
-            String description = req.getParameter("description");
-
-            TodoDto inserDto = new TodoDto();
-            inserDto.setTitle(title);
-            inserDto.setDescription(description);
-
-            boolean result = service.insert(inserDto);
-
-            // 화면이동(list)
-            // resp.sendRedirect("/list.do");
+            action = new TodoReadAction("/view/list.do");
         }
 
         ActionForward af = null;
