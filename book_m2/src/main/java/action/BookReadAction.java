@@ -9,18 +9,22 @@ import service.BookServiceImpl;
 
 @AllArgsConstructor
 public class BookReadAction implements Action {
+
     private String path;
 
     @Override
     public ActionForward execute(HttpServletRequest req) throws Exception {
+
+        // code 가져오기
         String code = req.getParameter("code");
 
+        // 서비스 read()
         BookService service = new BookServiceImpl();
         BookDto dto = service.read(Integer.parseInt(code));
 
-        req.setAttribute("dto", dto); // -> setAttribute가 나오면 false
+        // request 담기
+        req.setAttribute("dto", dto);
 
         return new ActionForward(path, false);
     }
-
 }

@@ -12,6 +12,8 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import dto.BookDto;
+import dto.ChangeDto;
+import dto.MemberDto;
 
 public class BookDao {
     private Connection con;
@@ -33,7 +35,7 @@ public class BookDao {
         Context initContext;
         try {
             initContext = new InitialContext();
-            // java:/comp/evn = 등록된 이름 관리
+            // java:/comp/env : 등록된 이름 관리
             Context envContext = (Context) initContext.lookup("java:/comp/env");
             DataSource ds = (DataSource) envContext.lookup("jdbc/myoracle");
             con = ds.getConnection();
@@ -50,39 +52,6 @@ public class BookDao {
         String sql = "select * from booktbl order by code desc";
         try {
             pstmt = con.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                BookDto dto = new BookDto();
-                dto.setCode(rs.getInt("code"));
-                dto.setTitle(rs.getString("title"));
-                dto.setWriter(rs.getString("writer"));
-                dto.setPrice(rs.getInt("price"));
-
-                list.add(dto);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(con, pstmt, rs);
-        }
-        return list;
-    }
-
-    public List<BookDto> getSearchList(String criteria, String keyword) {
-        List<BookDto> list = new ArrayList<>();
-        con = getConnection();
-
-        String sql = "";
-
-        if (criteria.equals("code")) {
-            sql = "select * from booktbl where code = ?";
-        } else {
-            sql = "select * from booktbl where writer = ?";
-        }
-
-        try {
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, keyword);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 BookDto dto = new BookDto();
@@ -175,17 +144,51 @@ public class BookDao {
         return result;
     }
 
-    public int delete(int code) {
-        int result = 0;
-
+    public List<BookDto> getSearchList(String criteria, String keyword) {
+        List<BookDto> list = new ArrayList<>();
         con = getConnection();
-        String sql = "delete booktbl where code = ?";
+
+        String sql = "";
+
+        if (criteria.equals("code")) {
+            // 검색기준(criteria)이 code 라면
+            sql = "SELECT * FROM BOOKTBL WHERE code=?";
+        } else {
+            // 검색기준(criteria)이 writer라면
+            sql = "SELECT * FROM BOOKTBL WHERE writer=?";
+        }
 
         try {
             pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, keyword);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                BookDto dto = new BookDto();
+                dto.setCode(rs.getInt("code"));
+                dto.setTitle(rs.getString("title"));
+                dto.setWriter(rs.getString("writer"));
+                dto.setPrice(rs.getInt("price"));
 
+                list.add(dto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt, rs);
+        }
+        return list;
+    }
+
+    public int delete(int code) {
+        int result = 0;
+        con = getConnection();
+        String sql = "DELETE BOOKTBL WHERE CODE = ?";
+
+        try {
+            pstmt = con.prepareStatement(sql);
             // ? 해결
             pstmt.setInt(1, code);
+
             result = pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -193,6 +196,89 @@ public class BookDao {
         } finally {
             close(con, pstmt);
         }
+        return result;
+    }
+
+    // member 작업
+    public MemberDto isLogin(MemberDto loginDto) {
+        // 로그인
+        // SELECT userid,name FROM MEMBERTBL WHERE USERID = 'hong123' AND PASSWORD =
+        // 'hong123'
+        MemberDto dto = null;
+        con = getConnection();
+        String sql = "SELECT userid,name FROM MEMBERTBL WHERE USERID = ? AND PASSWORD = ?";
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, loginDto.getUserid());
+            pstmt.setString(2, loginDto.getPassword());
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                dto = new MemberDto();
+                dto.setUserid(rs.getString("userid"));
+                dto.setName(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt, rs);
+        }
+        return dto;
+
+    }
+
+    public int passwordChange(ChangeDto changeDto) {
+        // 비밀번호 변경
+        // UPDATE MEMBERTBL SET PASSWORD = 'hong456' WHERE USERID = 'hong123'
+        int result = 0;
+        con = getConnection();
+        String sql = "UPDATE MEMBERTBL SET PASSWORD = ? WHERE USERID = ?";
+
+        try {
+            pstmt = con.prepareStatement(sql);
+
+            // ? 해결
+            pstmt.setString(1, changeDto.getNewPassword());
+            pstmt.setString(2, changeDto.getUserid());
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+
+        return result;
+
+    }
+
+    public int register(MemberDto insertDto) {
+        // 회원가입
+        // INSERT INTO memberTBL(userid,password,name,email)
+        // VALUES('hong123','hong123','홍길동','hong123@gmail.com')
+        int result = 0;
+
+        con = getConnection();
+        String sql = "INSERT INTO memberTBL(userid,password,name,email) ";
+        sql += "VALUES(?,?,?,?)";
+        try {
+            pstmt = con.prepareStatement(sql);
+
+            // ? 해결
+            pstmt.setString(1, insertDto.getUserid());
+            pstmt.setString(2, insertDto.getPassword());
+            pstmt.setString(3, insertDto.getName());
+            pstmt.setString(4, insertDto.getEmail());
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+
         return result;
     }
 

@@ -14,7 +14,12 @@ import action.ActionForward;
 import action.BookCreateAction;
 import action.BookDeleteAction;
 import action.BookListAction;
+import action.BookLoginAction;
+import action.BookLogoutAction;
+import action.BookPasswordAction;
 import action.BookReadAction;
+import action.BookRegisterAction;
+import action.BookSearchAction;
 import action.BookUpdateAction;
 
 @WebServlet("*.do")
@@ -42,6 +47,16 @@ public class BookControllerServlet extends HttpServlet {
             action = new BookUpdateAction("/read.do");
         } else if (cmd.equals("/delete.do")) {
             action = new BookDeleteAction("/list.do");
+        } else if (cmd.equals("/search.do")) {
+            action = new BookSearchAction("/view/list.jsp");
+        } else if (cmd.equals("/login.do")) {
+            action = new BookLoginAction("/list.do");
+        } else if (cmd.equals("/logout.do")) {
+            action = new BookLogoutAction("/");
+        } else if (cmd.equals("/change.do")) {
+            action = new BookPasswordAction("/view/login.jsp");
+        } else if (cmd.equals("/register.do")) {
+            action = new BookRegisterAction("/view/login.jsp");
         }
 
         // 생성된 action을 execute (호출해서 일시키기)

@@ -150,7 +150,12 @@
           </li>
         </ul>
         <hr />
+
+        <%-- member --%>
         <div class="dropdown">
+        <%-- if didnt login --%>
+        <%-- loginDto == null --%>
+        <c:if test="${empty loginDto}">
           <a
             href="#"
             class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
@@ -158,15 +163,30 @@
             aria-expanded="false"
           >
             <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
-            <strong>mdo</strong>
+            <strong> 회원 </strong>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
+            <li><a class="dropdown-item" href="/view/login.jsp">login</a></li>
+            <li><a class="dropdown-item" href="/view/register.jsp">sign up</a></li>
           </ul>
+          </c:if>
+            <%-- if login --%>
+            <c:if test="${not empty loginDto}">
+          <a
+            href="#"
+            class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+            <strong> ${loginDto.name} </strong>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="/logout.do"> 로그아웃 </a></li>
+            <li><a class="dropdown-item" href="/view/pwdChange.jsp"> 비밀번호 수정</a></li>
+            <li><a class="dropdown-item" href="/view/leave.jsp"> 회원 탈퇴</a></li>
+          </ul>
+          </c:if>
         </div>
       </div>
 
