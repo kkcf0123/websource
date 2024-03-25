@@ -23,7 +23,7 @@
         <textarea class="form-control" id="description" rows="3" name="description" readonly>${dto.description}</textarea>
     </div>
     <div class="mb-3">
-        <a href='<c:url value="/list" />' class="btn btn-primary">목록</a>
+        <a href='<c:url value="/list.do" />' class="btn btn-primary">목록</a>
     </div>
 </form>
 <%@ include file="/include/section.jsp" %>

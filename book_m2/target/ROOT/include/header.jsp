@@ -113,7 +113,7 @@
         <hr />
         <ul class="nav nav-pills flex-column mb-auto">
           <li class="nav-item">
-            <a href='<c:url value="/list" />' class="nav-link text-white" aria-current="page">
+            <a href='<c:url value="/list.do" />' class="nav-link text-white" aria-current="page">
               <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#list" /></svg>
               도서목록
             </a>
@@ -131,13 +131,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link text-white">
+            <a href='<c:url value="/view/search.jsp" />' class="nav-link text-white">
               <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#search" /></svg>
               도서검색
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link text-white">
+            <a href='<c:url value="/view/delete.jsp" />' class="nav-link text-white">
               <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#trash"></use></svg>
               도서삭제
             </a>
