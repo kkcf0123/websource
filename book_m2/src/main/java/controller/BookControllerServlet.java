@@ -13,6 +13,7 @@ import action.Action;
 import action.ActionForward;
 import action.BookCreateAction;
 import action.BookDeleteAction;
+import action.BookLeaveAction;
 import action.BookListAction;
 import action.BookLoginAction;
 import action.BookLogoutAction;
@@ -57,6 +58,8 @@ public class BookControllerServlet extends HttpServlet {
             action = new BookPasswordAction("/view/login.jsp");
         } else if (cmd.equals("/register.do")) {
             action = new BookRegisterAction("/view/login.jsp");
+        } else if (cmd.equals("/leave.do")) {
+            action = new BookLeaveAction("/");
         }
 
         // 생성된 action을 execute (호출해서 일시키기)

@@ -282,6 +282,31 @@ public class BookDao {
         return result;
     }
 
+    public int memberDel(MemberDto delDto) {
+        // 회원가입
+        // INSERT INTO memberTBL(userid,password,name,email)
+        // VALUES('hong123','hong123','홍길동','hong123@gmail.com')
+        int result = 0;
+        con = getConnection();
+        String sql = "DELETE FROM MEMBERTBL WHERE USERID = ? AND PASSWORD = ?";
+        try {
+            pstmt = con.prepareStatement(sql);
+
+            // ? 해결
+            pstmt.setString(1, delDto.getUserid());
+            pstmt.setString(2, delDto.getPassword());
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+
+        return result;
+    }
+
     // 4. 자원 정리
     public void close(Connection con, PreparedStatement pstmt, ResultSet rs) {
         try {

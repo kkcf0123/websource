@@ -14,10 +14,6 @@ import action.Action;
 import action.ActionForward;
 import action.TodoListAction;
 import action.TodoReadAction;
-import dao.TodoDao;
-import dto.TodoDto;
-import service.TodoService;
-import service.TodoServiceImpl;
 
 @WebServlet("*.do")
 public class TodoServlet extends HttpServlet {

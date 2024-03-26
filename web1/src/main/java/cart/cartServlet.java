@@ -19,6 +19,7 @@ public class cartServlet extends HttpServlet {
 
         HttpSession session = req.getSession();
         // session이 exist하는지 안하는지 check
+        @SuppressWarnings("unchecked")
         ArrayList<String> products = (ArrayList<String>) session.getAttribute("products");
 
         if (products == null) {
