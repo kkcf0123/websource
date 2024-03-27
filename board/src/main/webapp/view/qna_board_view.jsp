@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@include file="../include/header.jsp"%>
+<%@include file="/include/header.jsp"%>
 <!-- Main content -->
 <section class="content">
 	<div class="box box-primary">
@@ -8,7 +8,6 @@
 			<h3 class="box-title">Read Board</h3>
 		</div>
 		<div style="height:20px"></div>
-		<%-- <c:url value="/view/qna_board_view.jsp"/> --%>
 		<form action='' method="post" role="form">
 			<div class="box-body">
 				<div class="form-group row">
@@ -32,7 +31,7 @@
 				<div class="form-group  row">
 					<label for="filename" class="col-sm-2 col-form-label">파일첨부</label>
 					<div class="col-sm-10">
-						${dto.attach}
+						<a href ='<c:url value="/view/download.jsp?fileName=${dto.attach}"/>'>${dto.attach}</a>
 					</div>
 				</div>
 				<div style="height:10px"></div>
@@ -47,4 +46,8 @@
 		</form>
 	</div>
 </section>
-<%@include file="../include/footer.jsp"%>
+<script>
+	const bno = ${dto.bno};
+</script>
+<script src = '<c:url value="/js/read.js"/>'></script>
+<%@include file="/include/footer.jsp"%>

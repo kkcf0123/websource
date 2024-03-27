@@ -46,7 +46,7 @@ public class BoardWriteAction implements Action {
             File uploadFile = new File(saveDir + File.separator + uuid + "_" + fileName);
 
             part.write(uploadFile.toString());
-            dto.setAttach(uuid + fileName);
+            dto.setAttach(uploadFile.getName());
         }
 
         BoardService service = new BoardServiceImpl();

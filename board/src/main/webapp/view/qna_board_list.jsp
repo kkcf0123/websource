@@ -43,7 +43,14 @@
   		<c:forEach var="dto" items="${list}">
 			<tr><!-- 리스트 목록 보여주기 -->
 				<td class='text-center'>${dto.bno}</td>
-				<td><a href='<c:url value="/qRead.do?bno=${dto.bno}"/>'>${dto.title}</a></td>
+				<td>
+					<c:if test="${dto.reLev != 0}">
+						<c:forEach begin="0" end="${dto.reLev+1}">
+							&nbsp;
+						</c:forEach>
+					</c:if>
+					<a href='<c:url value="/qRead.do?bno=${dto.bno}"/>'>${dto.title}</a>
+				</td>
 				<td class='text-center'>${dto.name}</td>
 				<td class='text-center'>${dto.regdate}</td>
 				<td class='text-center'><span class="badge badge-pill badge-primary">${dto.readCount}</span></td>

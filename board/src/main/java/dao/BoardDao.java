@@ -46,7 +46,7 @@ public class BoardDao {
 
     public List<BoardDto> getList() {
         List<BoardDto> list = new ArrayList<>();
-        String sql = "SELECT BNO, TITLE, NAME, REGDATE, READ_COUNT FROM BOARD ORDER BY BNO";
+        String sql = "SELECT bno, title, name, REGDATE , READ_COUNT , RE_LEV  FROM BOARD ORDER BY re_ref DESC, RE_SEQ asc";
         con = getConnection();
 
         try {
@@ -59,6 +59,7 @@ public class BoardDao {
                 dto.setName(rs.getString(3));
                 dto.setRegdate(rs.getDate(4));
                 dto.setReadCount(rs.getInt(5));
+                dto.setReLev(rs.getInt(6));
                 list.add(dto);
             }
 
@@ -100,7 +101,7 @@ public class BoardDao {
     public BoardDto getRow(int bno) {
         BoardDto dto = null;
         con = getConnection();
-        String sql = "SELECT BNO, NAME, TITLE, CONTENT, ATTACH FROM BOARD WHERE BNO = ? ORDER BY BNO";
+        String sql = "SELECT BNO, NAME, TITLE, CONTENT, ATTACH, RE_REF, RE_SEQ, RE_LEV FROM BOARD WHERE BNO = ? ORDER BY BNO";
         try {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, bno);
@@ -108,10 +109,14 @@ public class BoardDao {
             if (rs.next()) {
                 dto = new BoardDto();
                 dto.setBno(rs.getInt(1));
-                dto.setTitle(rs.getString(2));
-                dto.setName(rs.getString(3));
+                dto.setName(rs.getString(2));
+                dto.setTitle(rs.getString(3));
                 dto.setContent(rs.getString("content"));
                 dto.setAttach(rs.getString("attach"));
+                // reply
+                dto.setReRef(rs.getInt("re_ref"));
+                dto.setReSeq(rs.getInt("re_seq"));
+                dto.setReLev(rs.getInt("re_lev"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,6 +124,86 @@ public class BoardDao {
             close(con, pstmt, rs);
         }
         return dto;
+    }
+
+    public int reply(BoardDto replyDto) {
+        int result = 0;
+
+        try {
+            con = getConnection();
+            int reRef = replyDto.getReRef();
+            int reSeq = replyDto.getReSeq();
+            int reLev = replyDto.getReLev();
+
+            String sql = "UPDATE BOARD SET RE_SEQ = RE_SEQ + 1 WHERE RE_REF = ? AND RE_SEQ > ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, reRef);
+            pstmt.setInt(2, reSeq);
+
+            pstmt.executeUpdate();
+
+            sql = "INSERT INTO BOARD(BNO, NAME, PASSWORD, TITLE, CONTENT, RE_REF ,RE_LEV, RE_SEQ)";
+            sql += "VALUES(board_seq.nextval,?,?,?,?, board_seq.currval, ?, ?)";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, replyDto.getName());
+            pstmt.setString(2, replyDto.getPassword());
+            pstmt.setString(3, replyDto.getTitle());
+            pstmt.setString(4, replyDto.getContent());
+            pstmt.setInt(5, reRef);
+            pstmt.setInt(6, reLev + 1);
+            pstmt.setInt(7, reSeq + 1);
+
+            result = pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+        return result;
+    }
+
+    public int update(BoardDto updateDto) {
+        int result = 0;
+
+        try {
+            con = getConnection();
+            String sql = "UPDATE  BOARD SET TITLE =?, CONTENT = ? WHERE BNO =? AND PASSWORD = ?";
+
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, updateDto.getTitle());
+            pstmt.setString(2, updateDto.getContent());
+            pstmt.setInt(3, updateDto.getBno());
+            pstmt.setString(4, updateDto.getPassword());
+
+            result = pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+        return result;
+    }
+
+    public int delete(BoardDto deleteDto) {
+        // bno & password
+        int result = 0;
+        String sql = "DELETE FROM BOARD WHERE BNO=? AND PASSWORD = ?";
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, deleteDto.getBno());
+            pstmt.setString(2, deleteDto.getPassword());
+
+            result = pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+        return result;
     }
 
     // 4. 자원 정리
