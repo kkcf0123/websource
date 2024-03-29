@@ -17,24 +17,26 @@ import action.BoardListAction;
 import action.BoardModifyAction;
 import action.BoardReadAction;
 import action.BoardReplyAction;
+import action.BoardSearchAction;
+import action.BoardUpdateCountAction;
 import action.BoardWriteAction;
 
 @WebServlet("*.do")
-@MultipartConfig // support file upload
-// @MultipartConfig(maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024
-// * 50) // support file upload
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 50) // 파일 업로드 지원
 public class BoardControllerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 한글처리
         req.setCharacterEncoding("utf-8");
 
-        // URI 분리작업
-        String requestUri = req.getRequestURI(); // 8080이후의 경로
-        String contextPath = req.getContextPath(); // pj name
-        String cmd = requestUri.substring(contextPath.length()); // .do get
+        // URI 분리
+        String requestUri = req.getRequestURI();
+        String contextPath = req.getContextPath();
+        String cmd = requestUri.substring(contextPath.length());
 
+        // cmd를 가지고 액션 생성
         Action action = null;
-        // cmd로 action 생성
+
         if (cmd.equals("/qList.do")) {
             action = new BoardListAction("/view/qna_board_list.jsp");
         } else if (cmd.equals("/qWrite.do")) {
@@ -48,13 +50,17 @@ public class BoardControllerServlet extends HttpServlet {
         } else if (cmd.equals("/qDelete.do")) {
             action = new BoardDeleteAction("/qList.do");
         } else if (cmd.equals("/qReplyView.do")) {
-            action = new BoardReplyAction("/view/qna_board_reply.jsp");
+            action = new BoardReadAction("/view/qna_board_reply.jsp");
         } else if (cmd.equals("/qReply.do")) {
             action = new BoardReplyAction("/qList.do");
+        } else if (cmd.equals("/qCount.do")) {
+            action = new BoardUpdateCountAction("/qRead.do");
         }
+        // else if (cmd.equals("/qSearch.do")) {
+        // action = new BoardSearchAction("/view/qna_board_list.jsp");
+        // }
 
-        // 생성된 action을 execute (호출해서 일시키기)
-        // servlet역할이였던 것
+        // 생성된 action에게 일 시키기(서블릿(~Pro)이 해야했던 일)
         ActionForward af = null;
         try {
             af = action.execute(req);

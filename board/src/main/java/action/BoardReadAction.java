@@ -18,9 +18,6 @@ public class BoardReadAction implements Action {
 
         BoardService service = new BoardServiceImpl();
         BoardDto dto = service.read(bno);
-
-        dto.getAttach();
-
         req.setAttribute("dto", dto);
 
         return new ActionForward(path, false);
